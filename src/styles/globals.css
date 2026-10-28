@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --accent: #FFC857;
+    --nav-h: 76px;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: var(--nav-h);
+  }
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-charcoal font-body text-cream antialiased;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: #E53935;
+    color: #FFF5E8;
+  }
+  :focus-visible {
+    outline: 3px solid #FFC857;
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+}
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-10;
+  }
+  .eyebrow {
+    @apply font-display text-[0.72rem] font-semibold uppercase tracking-[0.28em] sm:text-xs;
+  }
+  .display {
+    @apply font-display font-bold uppercase leading-[0.88] tracking-tightest;
+  }
+  /* animated underline link */
+  .link-u {
+    @apply relative inline-flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-[0.14em];
+  }
+  .link-u::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 h-[2px] w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out;
+  }
+  .link-u:hover::after, .link-u:focus-visible::after {
+    @apply origin-left scale-x-100;
+  }
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.9'/></svg>");
+  }
+}
+
+/* line-mask reveal used by SectionHeading */
+.line-mask { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+.line-mask > span { display: block; will-change: transform; }
+
+/* steam wisps used by the poster fallback */
+@keyframes wisp {
+  0% { transform: translateY(10px) scaleX(1); opacity: 0; }
+  30% { opacity: .55; }
+  100% { transform: translateY(-90px) scaleX(1.6); opacity: 0; }
+}
+.wisp { animation: wisp 3.2s ease-out infinite; }
+
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee { animation: marquee 28s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marquee { animation: none; }
+}
